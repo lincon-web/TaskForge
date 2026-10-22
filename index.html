@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0b1120">
+
+
+<title>TaskForge | Productivity Dashboard</title>
+
+<link rel="stylesheet" href="style.css">
+
+
+</head>
+
+<body>
+
+
+<div class="app-layout">
+
+    <!-- SIDEBAR NAVIGATION -->
+    <aside class="sidebar">
+
+        <div class="brand">
+            <div class="brand-icon">T</div>
+
+            <div class="brand-text">
+                <h1>TaskForge</h1>
+                <p>PRODUCTIVITY SPACE</p>
+            </div>
+        </div>
+
+        <div class="sidebar-heading">WORKSPACE</div>
+
+        <nav class="sidebar-nav" aria-label="Main navigation">
+
+            <button
+                class="nav-item active"
+                type="button"
+                data-screen-target="home">
+                <span class="nav-icon">⌂</span>
+                <span>Home</span>
+            </button>
+
+            <button
+                class="nav-item"
+                type="button"
+                data-screen-target="tasks">
+                <span class="nav-icon">▤</span>
+                <span>My Tasks</span>
+            </button>
+
+            <button
+                class="nav-item"
+                type="button"
+                data-screen-target="planner">
+                <span class="nav-icon">▦</span>
+                <span>Planner</span>
+            </button>
+
+            <button
+                class="nav-item"
+                type="button"
+                data-screen-target="insights">
+                <span class="nav-icon">◔</span>
+                <span>Insights</span>
+            </button>
+
+        </nav>
+
+        <div class="sidebar-bottom">
+            <div class="sidebar-tip">
+                <span class="tip-icon">✦</span>
+                <h3>Stay consistent.</h3>
+                <p>Small steps every day lead to big results.</p>
+            </div>
+
+            <p class="sidebar-version">TASKFORGE · YOUR PRODUCTIVITY SPACE</p>
+        </div>
+
+    </aside>
+
+
+    <!-- MAIN APPLICATION AREA -->
+    <div class="app-main">
+
+        <!-- TOP BAR -->
+        <header class="topbar">
+
+            <div class="topbar-heading">
+                <p class="topbar-label">YOUR PRODUCTIVITY SPACE</p>
+                <h2 id="screen-title">Welcome back!</h2>
+            </div>
+
+            <button
+                class="topbar-action"
+                type="button"
+                data-screen-target="tasks">
+                + Add Task
+            </button>
+
+        </header>
+
+
+        <!-- SCREEN CONTENT -->
+        <main class="screen-container">
+
+
+            <!-- ================================== -->
+            <!-- SCREEN 1: HOME                     -->
+            <!-- ================================== -->
+
+            <section
+                id="screen-home"
+                class="app-screen active-screen"
+                aria-labelledby="home-heading">
+
+                <div class="welcome-section">
+                    <div class="welcome-content">
+                        <p class="section-eyebrow">YOUR DAY, YOUR PACE</p>
+
+                        <h2 id="home-heading">
+                            Make today count.
+                        </h2>
+
+                        <p class="welcome-description">
+                            Organize your responsibilities, stay focused,
+                            and make progress one task at a time.
+                        </p>
+
+                        <button
+                            class="primary-button"
+                            type="button"
+                            data-screen-target="tasks">
+                            View My Tasks →
+                        </button>
+                    </div>
+
+                    <div class="welcome-decoration" aria-hidden="true">
+                        <span>✦</span>
+                        <span>✧</span>
+                        <span>✦</span>
+                    </div>
+                </div>
+
+
+                <!-- HOME STATISTICS -->
+                <div class="section-heading">
+                    <div>
+                        <p class="section-eyebrow">YOUR PROGRESS</p>
+                        <h2>Productivity Overview</h2>
+                    </div>
+
+                    <span class="section-caption">All your tasks</span>
+                </div>
+
+                <div class="stats-grid">
+
+                    <article class="stat-card">
+                        <div class="stat-card-top">
+                            <span class="stat-label">Total Tasks</span>
+                            <span class="stat-icon">▤</span>
+                        </div>
+
+                        <p class="stat-value" id="total-tasks">0</p>
+                        <p class="stat-description">Tasks created</p>
+                    </article>
+
+
+                    <article class="stat-card">
+                        <div class="stat-card-top">
+                            <span class="stat-label">Completed</span>
+                            <span class="stat-icon">✓</span>
+                        </div>
+
+                        <p class="stat-value" id="completed-tasks">0</p>
+                        <p class="stat-description">Tasks finished</p>
+                    </article>
+
+
+                    <article class="stat-card">
+                        <div class="stat-card-top">
+                            <span class="stat-label">Remaining</span>
+                            <span class="stat-icon">◷</span>
+                        </div>
+
+                        <p class="stat-value" id="remaining-tasks">0</p>
+                        <p class="stat-description">Tasks to complete</p>
+                    </article>
+
+
+                    <article class="stat-card">
+                        <div class="stat-card-top">
+                            <span class="stat-label">Completion Rate</span>
+                            <span class="stat-icon">↗</span>
+                        </div>
+
+                        <p class="stat-value" id="completion-rate">0%</p>
+                        <p class="stat-description">Overall progress</p>
+                    </article>
+
+                </div>
+
+
+                <!-- HOME SMART REMINDERS -->
+                <div class="section-heading">
+                    <div>
+                        <p class="section-eyebrow">KEEP ON TRACK</p>
+                        <h2>Smart Reminders</h2>
+                    </div>
+                </div>
+
+                <div class="reminders-grid">
+
+                    <article class="reminder-card overdue-reminder">
+                        <div class="reminder-icon">!</div>
+
+                        <div>
+                            <p class="reminder-label">Overdue</p>
+                            <p
+                                class="reminder-count"
+                                id="overdue-count">0</p>
+                        </div>
+                    </article>
+
+
+                    <article class="reminder-card today-reminder">
+                        <div class="reminder-icon">◷</div>
+
+                        <div>
+                            <p class="reminder-label">Due Today</p>
+                            <p
+                                class="reminder-count"
+                                id="due-today-count">0</p>
+                        </div>
+                    </article>
+
+
+                    <article class="reminder-card upcoming-reminder">
+                        <div class="reminder-icon">↗</div>
+
+                        <div>
+                            <p class="reminder-label">Upcoming</p>
+                            <p
+                                class="reminder-count"
+                                id="upcoming-count">0</p>
+                        </div>
+                    </article>
+
+                </div>
+
+
+                <div class="reminder-message-card">
+                    <span class="message-icon">✦</span>
+
+                    <div>
+                        <h3>Your daily reminder</h3>
+                        <p id="reminder-message">
+                            Add a task to start organizing your day.
+                        </p>
+                    </div>
+                </div>
+
+            </section>
+
+
+
+            <!-- ================================== -->
+            <!-- SCREEN 2: MY TASKS                 -->
+            <!-- ================================== -->
+
+            <section
+                id="screen-tasks"
+                class="app-screen"
+                aria-labelledby="tasks-heading"
+                hidden>
+
+                <div class="page-intro">
+                    <p class="section-eyebrow">PLAN AND EXECUTE</p>
+                    <h2 id="tasks-heading">My Tasks</h2>
+
+                    <p>
+                        Capture your responsibilities and keep track
+                        of what needs to get done.
+                    </p>
+                </div>
+
+
+                <!-- ADD TASK FORM -->
+                <section class="task-form-card">
+
+                    <div class="section-heading">
+                        <div>
+                            <h3>Create a Task</h3>
+                            <p class="section-caption">
+                                Add a task to your workspace.
+                            </p>
+                        </div>
+                    </div>
+
+                    <form id="task-form">
+
+                        <div class="form-group">
+                            <label for="task-input">Task Name</label>
+
+                            <input
+                                type="text"
+                                id="task-input"
+                                placeholder="What do you need to accomplish?"
+                                autocomplete="off"
+                                required>
+                        </div>
+
+
+                        <div class="form-row">
+
+                            <div class="form-group">
+                                <label for="task-category">Category</label>
+
+                                <select id="task-category">
+                                    <option value="Education">
+                                        Education
+                                    </option>
+
+                                    <option value="Work">
+                                        Work
+                                    </option>
+
+                                    <option value="Personal">
+                                        Personal
+                                    </option>
+                                </select>
+                            </div>
+
+
+                            <div class="form-group">
+                                <label for="task-priority">Priority</label>
+
+                                <select id="task-priority">
+                                    <option value="Low">Low</option>
+                                    <option value="Medium" selected>
+                                        Medium
+                                    </option>
+                                    <option value="High">High</option>
+                                </select>
+                            </div>
+
+                        </div>
+
+
+                        <!-- TASK DUE DATE -->
+                        <div class="due-date-field">
+                            <label for="task-due-date">
+                                📅 Due Date
+                                <span>(Optional)</span>
+                            </label>
+
+                            <input
+                                type="date"
+                                id="task-due-date"
+                                aria-label="Task due date"
+                                title="Choose a due date">
+                        </div>
+
+
+                        <button
+                            type="submit"
+                            class="primary-button add-task-button">
+                            + Add Task
+                        </button>
+
+                    </form>
+
+                </section>
+
+
+                <!-- TASK SEARCH AND FILTERS -->
+                <section class="task-management-section">
+
+                    <div class="section-heading">
+                        <div>
+                            <h3>Your Task List</h3>
+                            <p class="section-caption">
+                                Manage and filter your tasks.
+                            </p>
+                        </div>
+
+                        <span class="task-count-badge">
+                            <span id="task-count">0</span> tasks
+                        </span>
+                    </div>
+
+
+                    <div class="task-toolbar">
+
+                        <div class="search-box">
+                            <span class="search-icon" aria-hidden="true">
+                                ⌕
+                            </span>
+
+                            <input
+                                type="search"
+                                id="task-search"
+                                placeholder="Search tasks..."
+                                aria-label="Search tasks">
+                        </div>
+
+                        <button
+                            type="button"
+                            id="clear-search"
+                            class="secondary-button">
+                            Clear Search
+                        </button>
+
+                    </div>
+
+
+                    <div class="filter-groups">
+
+                        <div class="filter-group">
+                            <span class="filter-label">Status</span>
+
+                            <div class="filter-buttons">
+                                <button
+                                    type="button"
+                                    class="filter-btn active"
+                                    data-filter="all">
+                                    All
+                                </button>
+
+                                <button
+                                    type="button"
+                                    class="filter-btn"
+                                    data-filter="active">
+                                    Active
+                                </button>
+
+                                <button
+                                    type="button"
+                                    class="filter-btn"
+                                    data-filter="completed">
+                                    Completed
+                                </button>
+                            </div>
+                        </div>
+
+
+                        <div class="filter-group">
+                            <label
+                                class="filter-label"
+                                for="priority-filter">
+                                Priority
+                            </label>
+
+                            <select id="priority-filter">
+                                <option value="all">All priorities</option>
+                                <option value="High">High</option>
+                                <option value="Medium">Medium</option>
+                                <option value="Low">Low</option>
+                            </select>
+                        </div>
+
+                    </div>
+
+
+                    <!-- EXISTING JAVASCRIPT RENDERS TASKS HERE -->
+                    <div id="task-list" class="task-list"></div>
+
+
+                    <div id="empty-state" class="empty-state">
+                        <div class="empty-state-icon">✦</div>
+
+                        <h3>No tasks to show</h3>
+
+                        <p>
+                            Add a task or change your filters to
+                            see your tasks here.
+                        </p>
+                    </div>
+
+                </section>
+
+            </section>
+
+
+
+            <!-- ================================== -->
+            <!-- SCREEN 3: PLANNER                  -->
+            <!-- ================================== -->
+
+            <section
+                id="screen-planner"
+                class="app-screen"
+                aria-labelledby="planner-heading"
+                hidden>
+
+                <div class="page-intro">
+                    <p class="section-eyebrow">YOUR SCHEDULE</p>
+                    <h2 id="planner-heading">Planner</h2>
+
+                    <p>
+                        Keep an eye on deadlines and decide what
+                        deserves your attention next.
+                    </p>
+                </div>
+
+
+                <div class="planner-summary-grid">
+
+                    <article class="planner-summary-card">
+                        <span class="planner-summary-icon">!</span>
+
+                        <div>
+                            <p>Overdue Tasks</p>
+                            <h3 id="planner-overdue-count">0</h3>
+                        </div>
+                    </article>
+
+
+                    <article class="planner-summary-card">
+                        <span class="planner-summary-icon">◷</span>
+
+                        <div>
+                            <p>Due Today</p>
+                            <h3 id="planner-today-count">0</h3>
+                        </div>
+                    </article>
+
+
+                    <article class="planner-summary-card">
+                        <span class="planner-summary-icon">↗</span>
+
+                        <div>
+                            <p>Upcoming Tasks</p>
+                            <h3 id="planner-upcoming-count">0</h3>
+                        </div>
+                    </article>
+
+                </div>
+
+
+                <section class="planner-list-section">
+
+                    <div class="section-heading">
+                        <div>
+                            <h3>Deadline Overview</h3>
+                            <p class="section-caption">
+                                Tasks with deadlines will appear here.
+                            </p>
+                        </div>
+
+                        <button
+                            type="button"
+                            class="secondary-button"
+                            data-screen-target="tasks">
+                            + Add Task
+                        </button>
+                    </div>
+
+
+                    <div id="planner-task-list" class="planner-task-list">
+                        <div class="planner-placeholder">
+                            <span>▦</span>
+
+                            <h3>Your schedule will appear here</h3>
+
+                            <p>
+                                Add due dates to your tasks to organize
+                                them in your planner.
+                            </p>
+
+                            <button
+                                type="button"
+                                class="primary-button"
+                                data-screen-target="tasks">
+                                Create a Task
+                            </button>
+                        </div>
+                    </div>
+
+                </section>
+
+            </section>
+
+
+
+            <!-- ================================== -->
+            <!-- SCREEN 4: INSIGHTS                 -->
+            <!-- ================================== -->
+
+            <section
+                id="screen-insights"
+                class="app-screen"
+                aria-labelledby="insights-heading"
+                hidden>
+
+                <div class="page-intro">
+                    <p class="section-eyebrow">MEASURE YOUR PROGRESS</p>
+                    <h2 id="insights-heading">Insights</h2>
+
+                    <p>
+                        Understand your productivity and see how
+                        consistently you complete your tasks.
+                    </p>
+                </div>
+
+
+                <section class="insights-overview">
+
+                    <div class="section-heading">
+                        <div>
+                            <h3>Productivity Summary</h3>
+                            <p class="section-caption">
+                                Based on your saved tasks.
+                            </p>
+                        </div>
+                    </div>
+
+
+                    <div class="insights-stat-grid">
+
+                        <article class="insight-stat-card">
+                            <p>Total Tasks</p>
+                            <h3 id="insights-total">0</h3>
+                        </article>
+
+                        <article class="insight-stat-card">
+                            <p>Completed</p>
+                            <h3 id="insights-completed">0</h3>
+                        </article>
+
+                        <article class="insight-stat-card">
+                            <p>Remaining</p>
+                            <h3 id="insights-remaining">0</h3>
+                        </article>
+
+                        <article class="insight-stat-card">
+                            <p>Completion Rate</p>
+                            <h3 id="insights-rate">0%</h3>
+                        </article>
+
+                    </div>
+
+                </section>
+
+
+                <section class="insights-breakdown">
+
+                    <div class="section-heading">
+                        <div>
+                            <h3>Task Breakdown</h3>
+                            <p class="section-caption">
+                                See how your tasks are distributed.
+                            </p>
+                        </div>
+                    </div>
+
+
+                    <div class="insights-panel">
+
+                        <div class="breakdown-item">
+                            <div class="breakdown-heading">
+                                <span>Education</span>
+                                <strong id="insights-education-count">0</strong>
+                            </div>
+
+                            <div class="progress-track">
+                                <div
+                                    class="progress-fill education-progress"
+                                    id="insights-education-bar"
+                                    style="width: 0%">
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="breakdown-item">
+                            <div class="breakdown-heading">
+                                <span>Work</span>
+                                <strong id="insights-work-count">0</strong>
+                            </div>
+
+                            <div class="progress-track">
+                                <div
+                                    class="progress-fill work-progress"
+                                    id="insights-work-bar"
+                                    style="width: 0%">
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="breakdown-item">
+                            <div class="breakdown-heading">
+                                <span>Personal</span>
+                                <strong id="insights-personal-count">0</strong>
+                            </div>
+
+                            <div class="progress-track">
+                                <div
+                                    class="progress-fill personal-progress"
+                                    id="insights-personal-bar"
+                                    style="width: 0%">
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+                <div class="insights-note">
+                    <span>✦</span>
+
+                    <p>
+                        Consistency matters more than perfection.
+                        Keep completing tasks and your progress
+                        will grow over time.
+                    </p>
+                </div>
+
+            </section>
+
+
+        </main>
+
+
+        <!-- FOOTER -->
+        <footer class="app-footer">
+            <p>TaskForge · Build better habits, one task at a time.</p>
+        </footer>
+
+    </div>
+
+</div>
+
+
+<!-- MOBILE BOTTOM NAVIGATION -->
+<nav class="bottom-nav" aria-label="Mobile navigation">
+
+    <button
+        class="bottom-nav-item active"
+        type="button"
+        data-screen-target="home">
+        <span class="bottom-nav-icon">⌂</span>
+        <span>Home</span>
+    </button>
+
+    <button
+        class="bottom-nav-item"
+        type="button"
+        data-screen-target="tasks">
+        <span class="bottom-nav-icon">▤</span>
+        <span>Tasks</span>
+    </button>
+
+    <button
+        class="bottom-nav-item"
+        type="button"
+        data-screen-target="planner">
+        <span class="bottom-nav-icon">▦</span>
+        <span>Planner</span>
+    </button>
+
+    <button
+        class="bottom-nav-item"
+        type="button"
+        data-screen-target="insights">
+        <span class="bottom-nav-icon">◔</span>
+        <span>Insights</span>
+    </button>
+
+</nav>
+
+
+<script src="script.js"></script>
+
+
+</body>
+</html>

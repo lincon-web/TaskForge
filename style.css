@@ -102,26 +102,69 @@ border-right: 1px solid var(--border);
 }
 
 .brand {
-display: flex;
-align-items: center;
-gap: 12px;
-padding: 0 8px;
-margin-bottom: 48px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0 8px;
+    margin-bottom: 48px;
 }
 
-.brand-icon {
-width: 44px;
-height: 44px;
-flex-shrink: 0;
-display: grid;
-place-items: center;
-border-radius: 13px;
-background: linear-gradient(135deg, #7092ff, #4164e8);
-color: white;
-font-size: 24px;
-font-weight: 800;
-box-shadow: 0 5px 25px #4164e833;
+.brand .brand-icon {
+    width: 46px;
+    height: 46px;
+    flex-shrink: 0;
+    object-fit: contain;
 }
+
+.brand .brand-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-width: 0;
+}
+
+.brand .brand-text h1 {
+    margin: 0;
+    font-size: 21px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    line-height: 1.2;
+}
+
+.brand .brand-text p {
+    margin: 5px 0 0;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 1.1px;
+    line-height: 1.4;
+    color: var(--muted);
+}
+
+
+.brand-icon {
+width: 54px;
+height: 54px;
+flex-shrink: 0;
+display: block;
+object-fit: contain;
+border-radius: 13px;
+filter: drop-shadow(0 5px 12px rgba(59, 130, 246, 0.2));
+}
+
+.brand-text h1 {
+margin: 0;
+font-weight: 800;
+letter-spacing: -0.5px;
+}
+
+.brand-text p {
+margin: 5px 0 0;
+color: #94a3b8;
+font-size: 10px;
+font-weight: 700;
+letter-spacing: 2px;
+}
+
 
 .brand-text h1 {
 font-size: 21px;
@@ -1523,7 +1566,7 @@ padding-bottom: 80px;
     bottom: 0;
     left: 0;
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(5, minmax(0, 1fr));
     gap: 3px;
     padding: 8px 7px max(8px, env(safe-area-inset-bottom));
     background: rgba(8, 13, 26, 0.97);
@@ -1893,4 +1936,710 @@ transition-duration: 0.01ms !important;
     .planner-empty-state {
         padding: 12px;
     }
+}
+
+/* ==========================================
+   TASKFORGE 2.0 — AUTHENTICATION INTERFACE
+========================================== */
+
+.auth-screen {
+    min-height: 100vh;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 35px 20px 50px;
+    background:
+        radial-gradient(
+            circle at 15% 20%,
+            rgba(82, 123, 255, 0.15),
+            transparent 32%
+        ),
+        radial-gradient(
+            circle at 85% 80%,
+            rgba(69, 214, 160, 0.08),
+            transparent 30%
+        );
+}
+
+.auth-brand {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    width: min(100%, 1050px);
+    position: relative;
+    z-index: 1;
+}
+
+.auth-brand .brand-icon {
+width: 58px;
+height: 58px;
+flex-shrink: 0;
+object-fit: contain;
+}
+
+.auth-brand .brand-text {
+display: flex;
+flex-direction: column;
+justify-content: center;
+min-width: 0;
+}
+
+.auth-brand h1 {
+margin: 0;
+color: var(--text);
+font-size: 26px;
+font-weight: 800;
+letter-spacing: -0.8px;
+line-height: 1.2;
+}
+
+.auth-brand p {
+margin: 5px 0 0;
+color: var(--muted);
+font-size: 10px;
+font-weight: 700;
+letter-spacing: 1.5px;
+line-height: 1.5;
+}
+
+.auth-container {
+    width: min(100%, 440px);
+    margin: auto;
+    padding: 45px 0;
+    position: relative;
+    z-index: 1;
+}
+
+.auth-heading {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.auth-eyebrow {
+    display: inline-block;
+    margin-bottom: 15px;
+    color: var(--primary-hover);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 2px;
+}
+
+.auth-heading h2 {
+    margin: 0;
+    color: var(--text);
+    font-size: clamp(34px, 7vw, 48px);
+    line-height: 1.12;
+    letter-spacing: -2px;
+}
+
+.auth-heading h2 span {
+    color: var(--primary-hover);
+}
+
+.auth-heading > p {
+    max-width: 360px;
+    margin: 15px auto 0;
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.8;
+}
+
+.auth-card {
+    padding: 28px;
+    border: 1px solid var(--border);
+    border-radius: 22px;
+    background: rgba(16, 26, 46, 0.94);
+    box-shadow: 0 25px 80px rgba(0, 0, 0, 0.25);
+    backdrop-filter: blur(18px);
+}
+
+.auth-tabs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+    padding: 5px;
+    margin-bottom: 25px;
+    border-radius: 12px;
+    background: var(--bg);
+}
+
+.auth-tab {
+    min-height: 43px;
+    border: none;
+    border-radius: 9px;
+    background: transparent;
+    color: var(--muted);
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+.auth-tab.active {
+    background: var(--surface-light);
+    color: var(--text);
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.15);
+}
+
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 17px;
+}
+
+.auth-form[hidden],
+.auth-status:empty {
+    display: none;
+}
+
+.auth-form .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.auth-form label {
+    color: var(--text);
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.auth-form input {
+    width: 100%;
+    min-height: 48px;
+    padding: 0 14px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    outline: none;
+    background: var(--bg);
+    color: var(--text);
+    font: inherit;
+    font-size: 13px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.auth-form input::placeholder {
+    color: var(--muted);
+    opacity: 0.75;
+}
+
+.auth-form input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(82, 123, 255, 0.14);
+}
+
+.auth-submit {
+    width: 100%;
+    min-height: 49px;
+    margin-top: 5px;
+    font-weight: 800;
+}
+
+.auth-divider {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin: 24px 0;
+    color: var(--muted);
+    font-size: 10px;
+    font-weight: 800;
+}
+
+.auth-divider::before,
+.auth-divider::after {
+    content: "";
+    height: 1px;
+    flex: 1;
+    background: var(--border);
+}
+
+.guest-button {
+    width: 100%;
+    min-height: 48px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: transparent;
+    color: var(--text);
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.guest-button:hover {
+    border-color: var(--primary);
+    background: rgba(82, 123, 255, 0.08);
+}
+
+.auth-status {
+    padding: 12px;
+    margin-bottom: 18px;
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    color: var(--text);
+    font-size: 12px;
+    line-height: 1.6;
+    overflow-wrap: anywhere;
+}
+
+.auth-status.error {
+    border-color: rgba(255, 100, 124, 0.4);
+    color: var(--danger);
+}
+
+.auth-status.success {
+    border-color: rgba(69, 214, 160, 0.4);
+    color: var(--success);
+}
+
+.auth-footer {
+    margin: 23px 0 0;
+    color: var(--muted);
+    text-align: center;
+    font-size: 11px;
+}
+
+.auth-decoration {
+    position: absolute;
+    width: 250px;
+    height: 250px;
+    border: 1px solid rgba(82, 123, 255, 0.08);
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+.auth-decoration-one {
+    top: 15%;
+    left: -180px;
+}
+
+.auth-decoration-two {
+    right: -180px;
+    bottom: 10%;
+    width: 330px;
+    height: 330px;
+}
+
+@media (max-width: 480px) {
+    .auth-screen {
+        padding: 25px 16px 35px;
+    }
+
+    .auth-container {
+        padding: 35px 0;
+    }
+
+    .auth-card {
+        padding: 21px;
+        border-radius: 17px;
+    }
+
+    .auth-heading h2 {
+        letter-spacing: -1.5px;
+    }
+}
+
+/* ==========================================
+TASKFORGE — PROFESSIONAL ACCOUNT SCREEN
+========================================== */
+
+.account-profile-card,
+.account-actions-card {
+position: relative;
+overflow: hidden;
+padding: 28px;
+margin-bottom: 24px;
+background: linear-gradient(
+145deg,
+rgba(20, 31, 55, 0.96),
+rgba(13, 21, 39, 0.98)
+);
+border: 1px solid rgba(148, 163, 184, 0.14);
+border-radius: 20px;
+box-shadow: 0 12px 35px rgba(0, 0, 0, 0.12);
+}
+
+.account-profile-card::before {
+content: "";
+position: absolute;
+top: -75px;
+right: -65px;
+width: 190px;
+height: 190px;
+border-radius: 50%;
+background: rgba(59, 130, 246, 0.09);
+pointer-events: none;
+}
+
+.account-profile-card .section-heading,
+.account-actions-card .section-heading {
+position: relative;
+z-index: 1;
+margin-bottom: 26px;
+}
+
+.account-profile-details {
+position: relative;
+z-index: 1;
+display: flex;
+align-items: center;
+gap: 22px;
+padding: 8px 0 4px;
+}
+
+.account-profile-avatar {
+display: grid;
+place-items: center;
+flex-shrink: 0;
+width: 88px;
+height: 88px;
+border: 1px solid rgba(96, 165, 250, 0.35);
+border-radius: 24px;
+background: linear-gradient(145deg, #1e40af, #172554);
+box-shadow: 0 8px 25px rgba(30, 64, 175, 0.25);
+font-size: 38px;
+}
+
+.account-profile-text {
+min-width: 0;
+}
+
+.account-profile-text h3 {
+margin: 0 0 7px;
+color: #f8fafc;
+font-size: 23px;
+font-weight: 700;
+overflow-wrap: anywhere;
+}
+
+.account-profile-text > p {
+margin: 0 0 13px;
+color: #94a3b8;
+font-size: 14px;
+overflow-wrap: anywhere;
+}
+
+.account-status-badge {
+display: inline-flex;
+align-items: center;
+gap: 8px;
+padding: 7px 11px;
+border: 1px solid rgba(52, 211, 153, 0.2);
+border-radius: 999px;
+background: rgba(16, 185, 129, 0.09);
+color: #6ee7b7;
+font-size: 12px;
+font-weight: 600;
+letter-spacing: 0.2px;
+}
+
+.account-status-badge::before {
+content: "";
+width: 7px;
+height: 7px;
+border-radius: 50%;
+background: #34d399;
+box-shadow: 0 0 10px rgba(52, 211, 153, 0.45);
+}
+
+.account-screen-actions {
+display: flex;
+flex-wrap: wrap;
+gap: 14px;
+}
+
+.account-screen-actions button {
+min-height: 46px;
+padding: 12px 20px;
+border-radius: 12px;
+font: inherit;
+font-weight: 600;
+cursor: pointer;
+transition:
+transform 0.2s ease,
+background 0.2s ease,
+border-color 0.2s ease,
+box-shadow 0.2s ease;
+}
+
+.account-screen-actions button:hover {
+transform: translateY(-2px);
+}
+
+.account-screen-actions button:focus-visible {
+outline: 2px solid #60a5fa;
+outline-offset: 3px;
+}
+
+.account-screen-actions .primary-button {
+box-shadow: 0 6px 18px rgba(37, 99, 235, 0.18);
+}
+
+.account-screen-actions .secondary-button {
+border: 1px solid rgba(148, 163, 184, 0.24);
+background: rgba(30, 41, 59, 0.55);
+color: #e2e8f0;
+}
+
+.account-screen-actions .secondary-button:hover {
+border-color: rgba(96, 165, 250, 0.5);
+background: rgba(37, 99, 235, 0.12);
+}
+
+.account-screen-actions button:disabled {
+opacity: 0.6;
+cursor: wait;
+transform: none;
+}
+
+.account-screen-note {
+margin: 22px 0 0;
+padding-top: 18px;
+border-top: 1px solid rgba(148, 163, 184, 0.12);
+color: #94a3b8;
+font-size: 13px;
+line-height: 1.7;
+}
+
+/* ACCOUNT SCREEN — TABLETS AND PHONES */
+
+@media (max-width: 760px) {
+.account-profile-card,
+.account-actions-card {
+padding: 22px 18px;
+border-radius: 17px;
+}
+
+.account-profile-details {
+    gap: 16px;
+}
+
+.account-profile-avatar {
+    width: 68px;
+    height: 68px;
+    border-radius: 19px;
+    font-size: 30px;
+}
+
+.account-profile-text h3 {
+    font-size: 19px;
+}
+
+.account-profile-text > p {
+    font-size: 13px;
+}
+
+.account-screen-actions {
+    flex-direction: column;
+}
+
+.account-screen-actions button {
+    width: 100%;
+}
+
+
+}
+
+@media (max-width: 380px) {
+.account-profile-details {
+align-items: flex-start;
+gap: 12px;
+}
+
+
+.account-profile-avatar {
+    width: 54px;
+    height: 54px;
+    border-radius: 15px;
+    font-size: 25px;
+}
+
+.account-profile-text h3 {
+    font-size: 17px;
+}
+
+
+}
+
+
+
+/* ==========================================
+   TASKFORGE — PASSWORD INPUT EYE BUTTON
+========================================== */
+
+.password-input-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.password-input-wrapper input {
+    width: 100%;
+    box-sizing: border-box;
+    padding-right: 50px;
+}
+
+.password-toggle {
+    position: absolute;
+    top: 50%;
+    right: 14px;
+    transform: translateY(-50%);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 32px;
+    height: 32px;
+    padding: 0;
+
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    color: #94a3b8;
+
+    cursor: pointer;
+    z-index: 2;
+}
+
+.password-toggle:hover {
+    color: #60a5fa;
+    background: rgba(96, 165, 250, 0.1);
+}
+
+.password-toggle:focus-visible {
+    outline: 2px solid #60a5fa;
+    outline-offset: 2px;
+}
+
+.password-toggle svg {
+    display: block;
+    flex-shrink: 0;
+    pointer-events: none;
+}
+
+
+/* ==========================================
+   TASKFORGE — PASSWORD STRENGTH INDICATOR
+========================================== */
+
+.password-strength {
+    margin-top: 12px;
+}
+
+.password-strength[hidden] {
+    display: none;
+}
+
+.password-strength-track {
+    width: 100%;
+    height: 5px;
+    overflow: hidden;
+    border-radius: 999px;
+    background: rgba(148, 163, 184, 0.18);
+}
+
+.password-strength-bar {
+    width: 0;
+    height: 100%;
+    border-radius: inherit;
+    background: #ef4444;
+    transition: width 0.3s ease, background-color 0.3s ease;
+}
+
+.password-strength-label {
+    margin: 8px 0 0;
+    color: #94a3b8;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.password-strength-label[data-strength="weak"] {
+    color: #f87171;
+}
+
+.password-strength-label[data-strength="fair"] {
+    color: #fbbf24;
+}
+
+.password-strength-label[data-strength="strong"] {
+    color: #34d399;
+}
+
+.password-strength-bar[data-strength="weak"] {
+    background: #ef4444;
+}
+
+.password-strength-bar[data-strength="fair"] {
+    background: #f59e0b;
+}
+
+.password-strength-bar[data-strength="strong"] {
+    background: #10b981;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .password-strength-bar {
+        transition: none;
+    }
+}
+
+
+
+/* ==========================================
+   TASKFORGE — PASSWORD MATCH FEEDBACK
+========================================== */
+
+.password-match-message {
+    margin: 9px 0 0;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.5;
+}
+
+.password-match-message[hidden] {
+    display: none;
+}
+
+.password-match-message.match-success {
+    color: #34d399;
+}
+
+.password-match-message.match-error {
+    color: #f87171;
+}
+
+/* ==========================================
+   TASKFORGE — FORGOT PASSWORD LINK
+========================================== */
+
+.forgot-password-row {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: -6px;
+    margin-bottom: 18px;
+}
+
+.forgot-password-button {
+    padding: 6px 0;
+    border: none;
+    background: transparent;
+    color: #60a5fa;
+    font: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.forgot-password-button:hover {
+    color: #93c5fd;
+    text-decoration: underline;
+}
+
+.forgot-password-button:focus-visible {
+    outline: 2px solid #60a5fa;
+    outline-offset: 4px;
+    border-radius: 4px;
 }

@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 180">
+  <defs>
+    <linearGradient id="blue" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#60A5FA"/>
+      <stop offset="100%" stop-color="#2563EB"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Transparent background -->
+
+  <!-- Emblem -->
+  <g transform="translate(10,10) scale(0.3125)">
+    <path
+      d="M256 52 L420 147 L420 336 L256 460 L92 336 L92 147 Z"
+      fill="none"
+      stroke="#334155"
+      stroke-width="12"
+      stroke-linejoin="round"
+    />
+
+    <path
+      d="M151 148 L320 148 L365 193 L365 231 L315 231 L294 209 L202 209 L202 282 L258 282 L258 333 L151 333 Z"
+      fill="#F1F5F9"
+    />
+
+    <path
+      d="M235 260 L326 260 L326 229 L383 285 L326 341 L326 310 L235 310 Z"
+      fill="url(#blue)"
+    />
+
+    <path
+      d="M365 126 L379 158 L411 172 L379 186 L365 218 L351 186 L319 172 L351 158 Z"
+      fill="#60A5FA"
+    />
+  </g>
+
+  <!-- Wordmark -->
+  <text
+    x="180"
+    y="103"
+    font-family="Arial, Helvetica, sans-serif"
+    font-size="58"
+    font-weight="800"
+    letter-spacing="1"
+    fill="#F1F5F9"
+  >TASK<tspan fill="url(#blue)">FORGE</tspan></text>
+
+  <!-- Tagline -->
+  <text
+    x="183"
+    y="133"
+    font-family="Arial, Helvetica, sans-serif"
+    font-size="15"
+    font-weight="600"
+    letter-spacing="4"
+    fill="#94A3B8"
+  >FORGED FOR PROGRESS</text>
+</svg>

@@ -6,6 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#0b1120">
 
+        
+<link rel="manifest" href="./manifest.json">
+<meta name="theme-color" content="#0b1120">
 
 <title>TaskForge | Productivity Dashboard</title>
 
@@ -16,20 +19,400 @@
 
 <body>
 
+    <!-- =========================================
+     TASKFORGE 2.0 — AUTHENTICATION SCREEN
+========================================== -->
+
+<div id="auth-screen" class="auth-screen">
+
+    <div class="auth-brand">
+    <img
+        src="taskforge-logo.svg"
+        alt="TaskForge emblem"
+        class="brand-icon"
+    >
+
+
+<div class="brand-text">
+    <h1>TASKFORGE</h1>
+    <p>FORGED FOR PROGRESS</p>
+</div>
+
+
+</div>
+
+
+    <div class="auth-container">
+
+        <div class="auth-heading">
+            <span class="auth-eyebrow">YOUR NEXT CHAPTER STARTS HERE</span>
+
+            <h2>Make room for<br><span>great things.</span></h2>
+
+            <p>
+                Organize your goals, manage your responsibilities,
+                and make every day count.
+            </p>
+        </div>
+
+        <div class="auth-card">
+
+            <div class="auth-tabs">
+                <button
+                    type="button"
+                    class="auth-tab active"
+                    data-auth-mode="signup">
+                    Create Account
+                </button>
+
+                <button
+                    type="button"
+                    class="auth-tab"
+                    data-auth-mode="signin">
+                    Sign In
+                </button>
+            </div>
+
+            <div id="auth-status" class="auth-status" role="status" aria-live="polite"></div>
+
+            <!-- REGISTRATION FORM -->
+
+            <form id="signup-form" class="auth-form">
+
+                <div class="form-group">
+                    <label for="signup-name">Full name</label>
+
+                    <input
+                        type="text"
+                        id="signup-name"
+                        placeholder="Enter your full name"
+                        autocomplete="name"
+                        required>
+                </div>
+
+                <div class="form-group">
+                    <label for="signup-email">Email address</label>
+
+                    <input
+                        type="email"
+                        id="signup-email"
+                        placeholder="you@example.com"
+                        autocomplete="email"
+                        required>
+                </div>
+
+                
+<div class="form-group">
+    <label for="signup-password">Password</label>
+
+    <div class="password-input-wrapper">
+        <input
+            type="password"
+            id="signup-password"
+            placeholder="Create a strong password"
+            autocomplete="new-password"
+            minlength="8"
+            required>
+
+        <button
+            type="button"
+            class="password-toggle"
+            data-password-target="signup-password"
+            aria-label="Show password"
+            aria-pressed="false">
+            <svg viewBox="0 0 24 24"
+                 width="20"
+                 height="20"
+                 fill="none"
+                 stroke="currentColor"
+                 stroke-width="1.8"
+                 stroke-linecap="round"
+                 stroke-linejoin="round"
+                 aria-hidden="true">
+                <path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"/>
+                <circle cx="12" cy="12" r="3"/>
+            </svg>
+        </button>
+    </div>
+
+    <div class="password-strength" id="signup-password-strength" hidden>
+        <div class="password-strength-track">
+            <div class="password-strength-bar" id="signup-strength-bar"></div>
+        </div>
+        <p class="password-strength-label" id="signup-strength-label"
+           aria-live="polite"></p>
+    </div>
+</div>
+
+
+                
+<div class="form-group">
+    <label for="signup-confirm-password">
+        Confirm password
+    </label>
+
+    <div class="password-input-wrapper">
+        <input
+            type="password"
+            id="signup-confirm-password"
+            placeholder="Enter your password again"
+            autocomplete="new-password"
+            minlength="8"
+            required>
+
+        <button
+            type="button"
+            class="password-toggle"
+            data-password-target="signup-confirm-password"
+            aria-label="Show password"
+            aria-pressed="false">
+            <svg viewBox="0 0 24 24"
+                 width="20"
+                 height="20"
+                 fill="none"
+                 stroke="currentColor"
+                 stroke-width="1.8"
+                 stroke-linecap="round"
+                 stroke-linejoin="round"
+                 aria-hidden="true">
+                <path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"/>
+                <circle cx="12" cy="12" r="3"/>
+            </svg>
+        </button>
+    </div>
+    
+<p
+    id="password-match-message"
+    class="password-match-message"
+    aria-live="polite"
+    hidden>
+</p>
+
+
+</div>
+
+
+                <button type="submit" class="primary-button auth-submit">
+                    Create My Account →
+                </button>
+
+            </form>
+
+            <!-- SIGN-IN FORM -->
+
+            <form id="signin-form" class="auth-form" hidden>
+
+                <div class="form-group">
+                    <label for="signin-email">Email address</label>
+
+                    <input
+                        type="email"
+                        id="signin-email"
+                        placeholder="you@example.com"
+                        autocomplete="email"
+                        required>
+                </div>
+
+                
+<div class="form-group">
+    <label for="signin-password">Password</label>
+
+    <div class="password-input-wrapper">
+        <input
+            type="password"
+            id="signin-password"
+            placeholder="Enter your password"
+            autocomplete="current-password"
+            required>
+
+        <button
+            type="button"
+            class="password-toggle"
+            data-password-target="signin-password"
+            aria-label="Show password"
+            aria-pressed="false">
+            <svg viewBox="0 0 24 24"
+                 width="20"
+                 height="20"
+                 fill="none"
+                 stroke="currentColor"
+                 stroke-width="1.8"
+                 stroke-linecap="round"
+                 stroke-linejoin="round"
+                 aria-hidden="true">
+                <path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"/>
+                <circle cx="12" cy="12" r="3"/>
+            </svg>
+        </button>
+    </div>
+</div>
+
+
+    <button type="submit" class="primary-button auth-submit">
+                    Sign In →
+                </button>
+                
+                <div class="forgot-password-row">
+    <button
+        type="button"
+        id="forgot-password-button"
+        class="forgot-password-button">
+        Forgot password?
+    </button>
+</div>
+            
+        </form>
+
+        <!-- RESET PASSWORD FORM -->
+        <form id="reset-password-form" class="auth-form" hidden>
+
+            <h2>Reset Your Password</h2>
+
+            <p class="auth-description">
+                Choose a strong new password for your TaskForge account.
+            </p>
+
+            <div class="form-group">
+                <label for="reset-new-password">New Password</label>
+
+                <div class="password-input-wrapper">
+                    <input
+                        type="password"
+                        id="reset-new-password"
+                        placeholder="Enter your new password"
+                        autocomplete="new-password"
+                        minlength="8"
+                        required>
+
+                    <button
+                        type="button"
+                        class="password-toggle"
+                        data-password-target="reset-new-password"
+                        aria-label="Show password"
+                        aria-pressed="false">
+                        <svg viewBox="0 0 24 24"
+                             width="20"
+                             height="20"
+                             fill="none"
+                             stroke="currentColor"
+                             stroke-width="1.8"
+                             stroke-linecap="round"
+                             stroke-linejoin="round"
+                             aria-hidden="true">
+                            <path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"/>
+                            <circle cx="12" cy="12" r="3"/>
+                        </svg>
+                    </button>
+                </div>
+
+                <div class="password-strength" id="reset-password-strength" hidden>
+                    <div class="password-strength-track">
+                        <div class="password-strength-bar" id="reset-strength-bar"></div>
+                    </div>
+                    <p class="password-strength-label" id="reset-strength-label"
+                       aria-live="polite"></p>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="reset-confirm-password">Confirm New Password</label>
+
+                <div class="password-input-wrapper">
+                    <input
+                        type="password"
+                        id="reset-confirm-password"
+                        placeholder="Enter your new password again"
+                        autocomplete="new-password"
+                        minlength="8"
+                        required>
+
+                    <button
+                        type="button"
+                        class="password-toggle"
+                        data-password-target="reset-confirm-password"
+                        aria-label="Show password"
+                        aria-pressed="false">
+                        <svg viewBox="0 0 24 24"
+                             width="20"
+                             height="20"
+                             fill="none"
+                             stroke="currentColor"
+                             stroke-width="1.8"
+                             stroke-linecap="round"
+                             stroke-linejoin="round"
+                             aria-hidden="true">
+                            <path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"/>
+                            <circle cx="12" cy="12" r="3"/>
+                        </svg>
+                    </button>
+                </div>
+
+                <p
+                    id="reset-password-match-message"
+                    class="password-match-message"
+                    aria-live="polite"
+                    hidden>
+                </p>
+            </div>
+
+            <button type="submit" class="primary-button auth-submit">
+                Update Password →
+            </button>
+
+            <p id="reset-password-status"
+               class="auth-status"
+               role="status"
+               aria-live="polite"></p>
+
+        </form>
+
+        <div class="auth-divider">
+            <span>OR</span>
+        </div>
+
+
+            <button
+                type="button"
+                id="guest-button"
+                class="guest-button">
+                Continue as Guest
+            </button>
+
+            <p class="auth-footer">
+                Your goals deserve a system that works.
+            </p>
+
+        </div>
+
+    </div>
+
+    <div class="auth-decoration auth-decoration-one"></div>
+    <div class="auth-decoration auth-decoration-two"></div>
+
+</div>
+
 
 <div class="app-layout">
 
     <!-- SIDEBAR NAVIGATION -->
     <aside class="sidebar">
 
-        <div class="brand">
-            <div class="brand-icon">T</div>
+       <div class="brand">
+    <img
+        src="taskforge-logo.svg"
+        alt="TaskForge emblem"
+        class="brand-icon"
+    >
 
-            <div class="brand-text">
-                <h1>TaskForge</h1>
-                <p>PRODUCTIVITY SPACE</p>
-            </div>
-        </div>
+
+<div class="brand-text">
+    <h1>TASKFORGE</h1>
+    <p>FORGED FOR PROGRESS</p>
+</div>
+
+
+</div>
+ 
 
         <div class="sidebar-heading">WORKSPACE</div>
 
@@ -67,17 +450,80 @@
                 <span>Insights</span>
             </button>
 
+            <button
+              class="nav-item"
+              type="button"
+             data-screen-target="account"> <span class="nav-icon">👤</span> <span>Account</span> 
+            </button>
+
+
         </nav>
 
         <div class="sidebar-bottom">
-            <div class="sidebar-tip">
-                <span class="tip-icon">✦</span>
-                <h3>Stay consistent.</h3>
-                <p>Small steps every day lead to big results.</p>
-            </div>
 
-            <p class="sidebar-version">TASKFORGE · YOUR PRODUCTIVITY SPACE</p>
+
+<div class="sidebar-tip">
+    <span class="tip-icon">✦</span>
+    <h3>Stay consistent.</h3>
+    <p>Small steps every day lead to big results.</p>
+</div>
+
+<div class="sidebar-account">
+
+    <button
+        type="button"
+        id="account-menu-button"
+        class="sidebar-account-button"
+        aria-expanded="false"
+        aria-controls="account-dropdown">
+
+        <span class="sidebar-account-avatar">👤</span>
+
+        <span class="sidebar-account-info">
+            <strong id="account-name">My Account</strong>
+            <small id="account-email">Guest Mode</small>
+        </span>
+
+        <span class="sidebar-account-chevron">⌄</span>
+    </button>
+
+    <div
+        id="account-dropdown"
+        class="account-dropdown"
+        hidden>
+
+        <div class="account-details">
+            <strong id="account-dropdown-name">TaskForge User</strong>
+            <span id="account-dropdown-email">Guest Mode</span>
         </div>
+
+        <div class="account-divider"></div>
+
+        <button
+            type="button"
+            id="switch-guest-button"
+            class="account-dropdown-item">
+            👤 Switch to Guest Mode
+        </button>
+
+        <button
+            type="button"
+            id="signout-button"
+            class="account-dropdown-item signout-item">
+            ↪ Sign Out
+        </button>
+
+    </div>
+
+</div>
+
+<p class="sidebar-version">
+    TASKFORGE · YOUR PRODUCTIVITY SPACE
+</p>
+
+
+</div>
+
 
     </aside>
 
@@ -85,22 +531,26 @@
     <!-- MAIN APPLICATION AREA -->
     <div class="app-main">
 
-        <!-- TOP BAR -->
         <header class="topbar">
 
-            <div class="topbar-heading">
-                <p class="topbar-label">YOUR PRODUCTIVITY SPACE</p>
-                <h2 id="screen-title">Welcome back!</h2>
-            </div>
 
-            <button
-                class="topbar-action"
-                type="button"
-                data-screen-target="tasks">
-                + Add Task
-            </button>
+<div class="topbar-heading">
+    <p class="topbar-label">YOUR PRODUCTIVITY SPACE</p>
+    <h2 id="screen-title">Welcome back!</h2>
+</div>
 
-        </header>
+<div class="topbar-actions">
+    <button
+        class="topbar-action"
+        type="button"
+        data-screen-target="tasks">
+        + Add Task
+    </button>
+</div>
+
+</header>
+
+
 
 
         <!-- SCREEN CONTENT -->
@@ -723,6 +1173,85 @@
 
             </section>
 
+            <!-- ================================== -->
+
+<!-- SCREEN 5: ACCOUNT                  -->
+
+<!-- ================================== -->
+
+<section
+    id="screen-account"
+    class="app-screen"
+    aria-labelledby="account-heading"
+    hidden>
+
+
+<div class="page-intro">
+    <p class="section-eyebrow">YOUR PERSONAL SPACE</p>
+    <h2 id="account-heading">My Account</h2>
+    <p>Manage your profile and choose how you want to use TaskForge.</p>
+</div>
+
+<section class="task-form-card account-profile-card">
+
+    <div class="section-heading">
+        <div>
+            <h3>Profile Information</h3>
+            <p class="section-caption">Your TaskForge account details.</p>
+        </div>
+    </div>
+
+    <div class="account-profile-details">
+        <div class="account-profile-avatar">👤</div>
+
+        <div class="account-profile-text">
+            <h3 id="profile-account-name">TaskForge User</h3>
+            <p id="profile-account-email">Guest Mode</p>
+            <span id="profile-account-status" class="account-status-badge">
+                Guest Mode
+            </span>
+        </div>
+    </div>
+
+</section>
+
+<section class="task-form-card account-actions-card">
+
+    <div class="section-heading">
+        <div>
+            <h3>Account Actions</h3>
+            <p class="section-caption">
+                Manage your current TaskForge session.
+            </p>
+        </div>
+    </div>
+
+    <div class="account-screen-actions">
+
+        <button
+            type="button"
+            id="account-switch-guest-button"
+            class="secondary-button">
+            Switch to Guest Mode
+        </button>
+
+        <button
+            type="button"
+            id="account-signout-button"
+            class="primary-button">
+            Sign Out
+        </button>
+
+    </div>
+
+    <p class="account-screen-note">
+        Your cloud tasks belong to your signed-in account.
+        Switching modes should not delete your saved tasks.
+    </p>
+
+</section>
+
+
 
         </main>
 
@@ -772,10 +1301,37 @@
         <span>Insights</span>
     </button>
 
+    <button
+ class="bottom-nav-item"
+ type="button"
+ data-screen-target="account"> <span class="bottom-nav-icon">👤</span> <span>Account</span> 
+</button>
+
+    
+
 </nav>
 
-
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
 <script src="script.js"></script>
+<script src="auth.js"></script>
+
+
+<script>
+    if ("serviceWorker" in navigator) {
+        window.addEventListener("load", async () => {
+            try {
+                const registration = await navigator.serviceWorker.register(
+                    "./service-worker.js"
+                );
+
+                console.log("TaskForge service worker registered:", registration.scope);
+            } catch (error) {
+                console.error("TaskForge service worker registration failed:", error);
+            }
+        });
+    }
+</script>
 
 
 </body>

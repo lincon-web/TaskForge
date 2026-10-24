@@ -27,14 +27,16 @@ const completionRateDisplay = document.getElementById("completion-rate");
 const taskCountDisplay = document.getElementById("task-count");
 const emptyState = document.getElementById("empty-state");
 
-const filterButtons = document.querySelectorAll(".filter-button");
-const priorityFilterButtons = document.querySelectorAll(
-    ".priority-filter-button"
-);
+// Status filter buttons
+const filterButtons = document.querySelectorAll(".filter-btn");
+
+// Priority filter dropdown
+const priorityFilter = document.getElementById("priority-filter");
 
 let currentFilter = "all";
 let currentPriorityFilter = "all";
 let currentSearchQuery = "";
+
 
 
 // ============================================
@@ -42,11 +44,78 @@ let currentSearchQuery = "";
 // ============================================
 
 let tasks = [];
+let taskStorageMode = "guest";
+let tasksReady = false;
 
-try {
-    const savedTasks = localStorage.getItem("taskforge-tasks");
 
-    if (savedTasks) {
+// ============================================
+// TASKFORGE — CLOUD TASK LOADING
+// ============================================
+
+function databaseTaskToAppTask(task) {
+    return {
+        id: String(task.id),
+        cloudId: task.id,
+        text: task.title,
+        category: task.category.charAt(0).toUpperCase()
+            + task.category.slice(1),
+        priority: task.priority.charAt(0).toUpperCase()
+            + task.priority.slice(1),
+        dueDate: task.due_date || "",
+        completed: task.completed
+    };
+}
+
+async function loadCloudTasks() {
+    const user = window.taskForgeAuth?.user;
+
+    if (!user) {
+        console.warn("No authenticated user. Cloud loading cancelled.");
+        return;
+    }
+
+    taskStorageMode = "cloud";
+    tasksReady = false;
+    tasks = [];
+    renderTasks();
+
+    try {
+        const { data, error } = await supabaseClient
+            .from("tasks")
+            .select("*")
+            .eq("user_id", user.id)
+            .order("created_at", { ascending: false });
+
+        if (error) {
+            throw error;
+        }
+
+        tasks = data.map(databaseTaskToAppTask);
+        tasksReady = true;
+
+        renderTasks();
+
+        console.log("TaskForge cloud tasks loaded:", tasks.length);
+    } catch (error) {
+        console.error("Could not load cloud tasks:", error);
+
+        alert(
+            "We couldn't load your cloud tasks. " +
+            "Please check your connection and try again."
+        );
+    }
+}
+
+
+function loadGuestTasks() {
+    try {
+        const savedTasks = localStorage.getItem("taskforge-guest-tasks");
+
+        if (!savedTasks) {
+            tasks = [];
+            return;
+        }
+
         const parsedTasks = JSON.parse(savedTasks);
 
         if (Array.isArray(parsedTasks)) {
@@ -56,11 +125,17 @@ try {
                 typeof task.text === "string" &&
                 typeof task.completed === "boolean"
             );
+        } else {
+            tasks = [];
         }
+    } catch (error) {
+        console.error("Could not load guest tasks:", error);
+        tasks = [];
     }
-} catch (error) {
-    console.error("Could not load saved tasks:", error);
 }
+
+loadGuestTasks();
+
 
 
 // ============================================
@@ -68,16 +143,22 @@ try {
 // ============================================
 
 function saveTasks() {
+    // Cloud mode will use Supabase instead of guest storage.
+    if (taskStorageMode === "cloud") {
+        return;
+    }
+
     try {
-        localStorage.setItem(
-            "taskforge-tasks",
-            JSON.stringify(tasks)
-        );
+       localStorage.setItem(
+    "taskforge-guest-tasks",
+    JSON.stringify(tasks)
+); 
     } catch (error) {
-        console.error("Could not save tasks:", error);
+        console.error("Could not save guest tasks:", error);
         alert("Your changes could not be saved in this browser.");
     }
 }
+
 
 
 // ============================================
@@ -410,7 +491,7 @@ function renderTasks() {
 // 8. ADD A NEW TASK
 // ============================================
 
-function addTask(event) {
+async function addTask(event) {
     event.preventDefault();
 
     const taskText = taskInput.value.trim();
@@ -420,64 +501,193 @@ function addTask(event) {
         return;
     }
 
+    if (taskStorageMode === "cloud" && !window.taskForgeAuth?.user) {
+        alert("Your session is unavailable. Please sign in again.");
+        return;
+    }
+
     const newTask = {
-    id: (crypto.randomUUID
-        ? crypto.randomUUID()
-        : Date.now().toString(36) + Math.random().toString(36).slice(2)),
-    text: taskText,
+        id: crypto.randomUUID
+            ? crypto.randomUUID()
+            : Date.now().toString(36) + Math.random().toString(36).slice(2),
+        text: taskText,
         category: taskCategory.value,
         priority: taskPriority.value,
         dueDate: taskDueDate.value,
         completed: false
     };
 
+    // CLOUD MODE: save the task to Supabase first.
+    if (taskStorageMode === "cloud") {
+        const user = window.taskForgeAuth.user;
+
+        const cloudTask = {
+            user_id: user.id,
+            title: newTask.text,
+            category: newTask.category.toLowerCase(),
+            priority: newTask.priority.toLowerCase(),
+            due_date: newTask.dueDate || null,
+            completed: false
+        };
+
+        const submitButton = taskForm.querySelector(
+            'button[type="submit"]'
+        );
+
+        if (submitButton) {
+            submitButton.disabled = true;
+        }
+
+        try {
+            const { data, error } = await supabaseClient
+                .from("tasks")
+                .insert(cloudTask)
+                .select()
+                .single();
+
+            if (error) {
+                throw error;
+            }
+
+            const savedTask = databaseTaskToAppTask(data);
+
+            tasks.unshift(savedTask);
+            renderTasks();
+
+            taskInput.value = "";
+            taskDueDate.value = "";
+            taskInput.focus();
+
+            console.log("Task saved to Supabase:", savedTask.text);
+        } catch (error) {
+            console.error("Could not save cloud task:", error);
+
+            alert(
+                "Your task could not be saved to the cloud. " +
+                "Please check your connection and try again."
+            );
+        } finally {
+            if (submitButton) {
+                submitButton.disabled = false;
+            }
+        }
+
+        return;
+    }
+
+    // GUEST MODE: preserve existing local storage behavior.
     tasks.unshift(newTask);
 
     saveTasks();
     renderTasks();
 
-    // Clear the task input and deadline after adding.
     taskInput.value = "";
     taskDueDate.value = "";
-
     taskInput.focus();
 }
 
+
 // Listen for form submission.
 taskForm.addEventListener("submit", addTask);
-
 
 // ============================================
 // 9. COMPLETE OR UNCOMPLETE A TASK
 // ============================================
 
-function toggleTask(taskId) {
-    tasks = tasks.map(task => {
-        if (task.id === taskId) {
-            return {
-                ...task,
-                completed: !task.completed
-            };
+async function toggleTask(taskId) {
+    const task = tasks.find(item => item.id === taskId);
+
+    if (!task) return;
+
+    const newCompletedStatus = !task.completed;
+
+    if (taskStorageMode === "cloud") {
+        const user = window.taskForgeAuth?.user;
+
+        if (!user || !task.cloudId) {
+            console.error("User session or cloud task ID is missing.");
+            alert("Your session may have expired. Please sign in again.");
+            return;
         }
 
-        return task;
-    });
+        try {
+            const { data, error } = await supabaseClient
+                .from("tasks")
+                .update({ completed: newCompletedStatus })
+                .eq("id", task.cloudId)
+                .eq("user_id", user.id)
+                .select("id");
+
+            if (error) throw error;
+
+            if (!data || data.length === 0) {
+                throw new Error("No task was updated.");
+            }
+        } catch (error) {
+            console.error("Could not update cloud task:", error);
+            alert("Could not update your task. Please try again.");
+            renderTasks();
+            return;
+        }
+    }
+
+    tasks = tasks.map(item =>
+        item.id === taskId
+            ? { ...item, completed: newCompletedStatus }
+            : item
+    );
 
     saveTasks();
     renderTasks();
 }
+
+
 
 
 // ============================================
 // 10. DELETE A TASK
 // ============================================
 
-function deleteTask(taskId) {
-    tasks = tasks.filter(task => task.id !== taskId);
+async function deleteTask(taskId) {
+    const task = tasks.find(item => item.id === taskId);
+
+    if (!task) return;
+
+    if (taskStorageMode === "cloud") {
+        const user = window.taskForgeAuth?.user;
+
+        if (!user || !task.cloudId) {
+            console.error("User session or cloud task ID is missing.");
+            alert("Your session may have expired. Please sign in again.");
+            return;
+        }
+
+        try {
+            const { data, error } = await supabaseClient
+                .from("tasks")
+                .delete()
+                .eq("id", task.cloudId)
+                .eq("user_id", user.id)
+                .select("id");
+
+            if (error) throw error;
+
+            if (!data || data.length === 0) {
+                throw new Error("No task was deleted.");
+            }
+        } catch (error) {
+            console.error("Could not delete cloud task:", error);
+            alert("Could not delete your task. Please try again.");
+            return;
+        }
+    }
+
+    tasks = tasks.filter(item => item.id !== taskId);
 
     saveTasks();
     renderTasks();
 }
+
 
 
 // ============================================
@@ -508,24 +718,12 @@ filterButtons.forEach(button => {
 // 12. PRIORITY FILTER BUTTONS
 // ============================================
 
-priorityFilterButtons.forEach(button => {
-    button.addEventListener("click", () => {
-        currentPriorityFilter = button.dataset.priorityFilter;
-
-        priorityFilterButtons.forEach(priorityButton => {
-            const isActive = priorityButton === button;
-
-            priorityButton.classList.toggle("active", isActive);
-
-            priorityButton.setAttribute(
-                "aria-pressed",
-                String(isActive)
-            );
-        });
-
+if (priorityFilter) {
+    priorityFilter.addEventListener("change", () => {
+        currentPriorityFilter = priorityFilter.value;
         renderTasks();
     });
-});
+}
 
 
 // ============================================
@@ -567,18 +765,11 @@ filterButtons.forEach(button => {
     );
 });
 
-// Set the initial priority filter button states.
-priorityFilterButtons.forEach(button => {
-    const isActive =
-        button.dataset.priorityFilter === currentPriorityFilter;
 
-    button.classList.toggle("active", isActive);
-
-    button.setAttribute(
-        "aria-pressed",
-        String(isActive)
-    );
-});
+// Set the initial priority filter dropdown.
+if (priorityFilter) {
+    priorityFilter.value = currentPriorityFilter;
+}
 
 // Display saved tasks and calculate initial statistics.
 renderTasks();
@@ -591,7 +782,8 @@ const screenTitles = {
 home: "Welcome back!",
 tasks: "My Tasks",
 planner: "Planner",
-insights: "Insights"
+insights: "Insights",
+account: "My Account"
 };
 
 function showScreen(screenName) {

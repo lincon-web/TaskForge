@@ -1,0 +1,20 @@
+{
+  "id": "./index.html",
+  "name": "TaskForge | Productivity Dashboard",
+  "short_name": "TaskForge",
+  "description": "Your personal productivity space. Plan your work, track your tasks, and forge your progress.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0b1120",
+  "theme_color": "#0b1120",
+  "icons": [
+    {
+      "src": "./taskforge-logo.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

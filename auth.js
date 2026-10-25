@@ -765,7 +765,7 @@ if (forgotPasswordButton && signinEmailInput && authStatus) {
 
         try {
             const redirectUrl =
-    "http://192.168.100.22:5500/index.html?reset-password=true";
+    "https://lincon-web.github.io/TaskForge/?reset-password=true";
 
             const { error } =
                 await supabaseClient.auth.resetPasswordForEmail(email, {

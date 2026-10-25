@@ -20,6 +20,49 @@
 <body>
 
     <!-- =========================================
+     TASKFORGE — WELCOME SPLASH SCREEN
+========================================== -->
+
+<div id="splash-screen" class="splash-screen">
+
+    <div class="splash-content">
+
+        <img
+            src="taskforge-logo.svg"
+            alt="TaskForge logo"
+            class="splash-logo"
+        >
+
+        <h1 class="splash-brand">TASKFORGE</h1>
+
+        <p class="splash-tagline">
+            FORGED FOR PROGRESS
+        </p>
+
+        <div class="splash-divider"></div>
+
+        <blockquote class="splash-quote">
+            "Your future is built by what you do today,
+            not what you plan to do tomorrow."
+        </blockquote>
+
+        <p class="splash-message">
+            Focus. Execute. Become.
+        </p>
+
+        <div class="splash-loader" aria-hidden="true">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+
+    </div>
+
+</div>
+
+<!-- EXISTING AUTHENTICATION SCREEN -->
+
+    <!-- =========================================
      TASKFORGE 2.0 — AUTHENTICATION SCREEN
 ========================================== -->
 
@@ -541,24 +584,28 @@
 
 <div class="topbar-actions">
 
-    <button
-        type="button"
-        id="enable-notifications-button"
-        class="notification-button"
-        aria-label="Enable notifications"
-        title="Enable notifications">
-        <span aria-hidden="true">🔔</span>
-        <span class="notification-button-text">Notifications</span>
-    </button>
 
-    <button
-        class="topbar-action"
-        type="button"
-        data-screen-target="tasks">
-        + Add Task
-    </button>
+<button
+    type="button"
+    id="enable-notifications-button"
+    class="notification-button"
+    aria-label="Enable notifications"
+    title="Enable notifications">
+    <span aria-hidden="true">🔔</span>
+    <span class="notification-button-text">Notifications</span>
+</button>
+
+<button
+    class="topbar-action"
+    type="button"
+    data-screen-target="tasks">
+    + Add Task
+</button>
+
 
 </div>
+
+
 
 </header>
 
@@ -811,8 +858,13 @@
                         </div>
 
 
-                        <!-- TASK DUE DATE -->
-                        <div class="due-date-field">
+                        
+                    
+                    <!-- TASK DEADLINE FIELDS -->
+
+                    <div class="form-row">
+
+                        <div class="form-group due-date-field">
                             <label for="task-due-date">
                                 📅 Due Date
                                 <span>(Optional)</span>
@@ -825,12 +877,29 @@
                                 title="Choose a due date">
                         </div>
 
+                        <div class="form-group">
+                            <label for="task-due-time">
+                                🕒 Deadline Time
+                                <span>(Optional)</span>
+                            </label>
 
-                        <button
-                            type="submit"
-                            class="primary-button add-task-button">
-                            + Add Task
-                        </button>
+                            <input
+                                type="time"
+                                id="task-due-time"
+                                name="due-time"
+                                aria-label="Task deadline time"
+                                title="Choose a deadline time">
+                        </div>
+
+                    </div>
+
+                    <button
+                        type="submit"
+                        class="primary-button add-task-button">
+                        + Add Task
+                    </button>
+
+
 
                     </form>
 
@@ -1263,15 +1332,142 @@
 
 </section>
 
+<!-- TASKFORGE SHARE SECTION -->
+
+<section class="task-form-card share-taskforge-card">
+
+
+<div class="section-heading">
+    <div>
+        <h3>Share TaskForge 🚀</h3>
+        <p class="section-caption">
+            Help someone build better habits, one task at a time.
+        </p>
+    </div>
+</div>
+
+<div class="share-buttons">
+
+    <a
+        href="https://wa.me/?text=Check%20out%20TaskForge%20-%20your%20personal%20productivity%20dashboard%3A%20https%3A%2F%2Flincon-web.github.io%2FTaskForge%2F"
+        class="share-button share-whatsapp"
+        target="_blank"
+        rel="noopener noreferrer">
+        <span aria-hidden="true">💬</span>
+        <span>WhatsApp</span>
+    </a>
+
+    <a
+        href="https://twitter.com/intent/tweet?text=Meet%20TaskForge%20-%20your%20productivity%20space.%20Organize%20tasks%2C%20manage%20deadlines%2C%20and%20track%20your%20progress.&url=https%3A%2F%2Flincon-web.github.io%2FTaskForge%2F"
+        class="share-button share-x"
+        target="_blank"
+        rel="noopener noreferrer">
+        <span aria-hidden="true">𝕏</span>
+        <span>Share on X</span>
+    </a>
+
+    <a
+        href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Flincon-web.github.io%2FTaskForge%2F"
+        class="share-button share-facebook"
+        target="_blank"
+        rel="noopener noreferrer">
+        <span aria-hidden="true">f</span>
+        <span>Facebook</span>
+    </a>
+
+    <button
+        type="button"
+        id="copy-taskforge-link"
+        class="share-button share-copy">
+        <span aria-hidden="true">🔗</span>
+        <span>Copy Link</span>
+    </button>
+
+    <button
+        type="button"
+        id="native-share-taskforge"
+        class="share-button share-native">
+        <span aria-hidden="true">📲</span>
+        <span>More Options</span>
+    </button>
+
+</div>
+
+<p
+    id="share-taskforge-status"
+    class="share-status"
+    role="status"
+    aria-live="polite"></p>
+
+
+</section>
+
+<!-- ABOUT TASKFORGE SECTION -->
+
+<section class="task-form-card about-taskforge-card">
+    <div class="section-heading">
+        <div>
+            <h3>About TaskForge</h3>
+            <p class="section-caption">Built for focus. Designed for progress.</p>
+        </div>
+    </div>
+
+
+<div class="about-brand">
+    <img src="taskforge-logo.svg" alt="TaskForge logo" class="about-logo">
+
+    <h2>TASKFORGE <span>2.0</span></h2>
+    <p class="about-tagline">FORGED FOR PROGRESS</p>
+
+    <p class="about-description">
+        Your productivity space. Build better habits, one task at a time.
+    </p>
+</div>
+
+<div class="about-quote">
+    <span class="quote-mark" aria-hidden="true">“</span>
+
+    <blockquote>
+        Big moves are built from small wins. Show up, complete the next
+        task, and keep moving. What feels small today can become the
+        foundation of something extraordinary tomorrow.
+    </blockquote>
+
+    <p class="quote-attribution">— The TaskForge Mindset</p>
+</div>
+
+<div class="about-principles">
+    <div class="about-principle">
+        <strong>01</strong>
+        <span>Start small.</span>
+    </div>
+
+    <div class="about-principle">
+        <strong>02</strong>
+        <span>Stay consistent.</span>
+    </div>
+
+    <div class="about-principle">
+        <strong>03</strong>
+        <span>Build something great.</span>
+    </div>
+</div>
+
+
+</section>
+
+
+
 
 
         </main>
 
 
-        <!-- FOOTER -->
-        <footer class="app-footer">
-            <p>TaskForge · Build better habits, one task at a time.</p>
-        </footer>
+        <!-- TASKFORGE DASHBOARD FOOTER -->
+<footer class="app-footer">
+    <p>TaskForge · Build better habits, one task at a time.</p>
+    <p>&copy; 2026 TaskForge. All rights reserved.</p>
+</footer>
 
     </div>
 

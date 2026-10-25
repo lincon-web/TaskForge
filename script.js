@@ -13,6 +13,7 @@ const taskPriority = document.getElementById("task-priority");
 const taskSearch = document.getElementById("task-search");
 const clearSearchButton = document.getElementById("clear-search");
 const taskDueDate = document.getElementById("task-due-date");
+const taskDueTime = document.getElementById("task-due-time");
 
 const overdueCountDisplay = document.getElementById("overdue-count");
 const dueTodayCountDisplay = document.getElementById("due-today-count");
@@ -62,6 +63,7 @@ function databaseTaskToAppTask(task) {
         priority: task.priority.charAt(0).toUpperCase()
             + task.priority.slice(1),
         dueDate: task.due_date || "",
+        dueTime: task.due_time || "",
         completed: task.completed
     };
 }
@@ -407,6 +409,44 @@ function renderTasks() {
 
                 dueDateContainer.appendChild(dateLabel);
 
+                
+            // Display the deadline time when one is set.
+            if (task.dueTime) {
+                const timeLabel = document.createElement("span");
+
+                timeLabel.className = "task-due-time";
+
+                const [hours, minutes] = task.dueTime
+                    .split(":")
+                    .map(Number);
+
+                if (
+                    Number.isInteger(hours) &&
+                    Number.isInteger(minutes) &&
+                    hours >= 0 &&
+                    hours <= 23 &&
+                    minutes >= 0 &&
+                    minutes <= 59
+                ) {
+                    const formattedTime = new Date(
+                        2000,
+                        0,
+                        1,
+                        hours,
+                        minutes
+                    ).toLocaleTimeString(undefined, {
+                        hour: "numeric",
+                        minute: "2-digit"
+                    });
+
+                    timeLabel.textContent =
+                        `🕒 Deadline: ${formattedTime}`;
+
+                    dueDateContainer.appendChild(timeLabel);
+                }
+            }
+
+
                 // Compare calendar dates.
                 const now = new Date();
 
@@ -507,28 +547,30 @@ async function addTask(event) {
     }
 
     const newTask = {
-        id: crypto.randomUUID
-            ? crypto.randomUUID()
-            : Date.now().toString(36) + Math.random().toString(36).slice(2),
-        text: taskText,
-        category: taskCategory.value,
-        priority: taskPriority.value,
-        dueDate: taskDueDate.value,
-        completed: false
-    };
+    id: crypto.randomUUID
+        ? crypto.randomUUID()
+        : Date.now().toString(36) + Math.random().toString(36).slice(2),
+    text: taskText,
+    category: taskCategory.value,
+    priority: taskPriority.value,
+    dueDate: taskDueDate.value,
+    dueTime: taskDueTime.value,
+    completed: false
+};
 
     // CLOUD MODE: save the task to Supabase first.
     if (taskStorageMode === "cloud") {
         const user = window.taskForgeAuth.user;
 
         const cloudTask = {
-            user_id: user.id,
-            title: newTask.text,
-            category: newTask.category.toLowerCase(),
-            priority: newTask.priority.toLowerCase(),
-            due_date: newTask.dueDate || null,
-            completed: false
-        };
+    user_id: user.id,
+    title: newTask.text,
+    category: newTask.category.toLowerCase(),
+    priority: newTask.priority.toLowerCase(),
+    due_date: newTask.dueDate || null,
+    due_time: newTask.dueTime || null,
+    completed: false
+};
 
         const submitButton = taskForm.querySelector(
             'button[type="submit"]'
@@ -556,6 +598,7 @@ async function addTask(event) {
 
             taskInput.value = "";
             taskDueDate.value = "";
+            taskDueTime.value = "";
             taskInput.focus();
 
             console.log("Task saved to Supabase:", savedTask.text);
@@ -583,6 +626,7 @@ async function addTask(event) {
 
     taskInput.value = "";
     taskDueDate.value = "";
+    taskDueTime.value = "";
     taskInput.focus();
 }
 
@@ -1070,3 +1114,339 @@ function updateInsights() {
     });
 }
 
+
+// ============================================
+// TASKFORGE — NOTIFICATION SETUP
+// ============================================
+
+const notificationButton = document.getElementById(
+    "enable-notifications-button"
+);
+
+async function enableTaskForgeNotifications() {
+    if (!("Notification" in window)) {
+        alert(
+            "Notifications are not supported by this browser. " +
+            "Try opening TaskForge in a supported browser."
+        );
+        return;
+    }
+
+    if (!("serviceWorker" in navigator)) {
+        alert(
+            "This browser does not support the service worker " +
+            "required for TaskForge notifications."
+        );
+        return;
+    }
+
+    if (Notification.permission === "denied") {
+        alert(
+            "Notifications are blocked. Please allow them in " +
+            "your browser or device settings."
+        );
+        return;
+    }
+
+    try {
+        let permission = Notification.permission;
+
+        if (permission === "default") {
+            permission = await Notification.requestPermission();
+        }
+
+        if (permission !== "granted") {
+            alert("Notification permission was not granted.");
+            return;
+        }
+
+        const registration = await navigator.serviceWorker.ready;
+
+        await registration.showNotification("TaskForge", {
+            body: "Notifications are enabled! Stay focused and keep making progress.",
+            icon: "./taskforge-logo.svg",
+            tag: "taskforge-welcome"
+        });
+
+        notificationButton.querySelector(
+            ".notification-button-text"
+        ).textContent = "Notifications On";
+
+        notificationButton.setAttribute(
+            "aria-label",
+            "Notifications enabled"
+        );
+
+        console.log("TaskForge notifications enabled successfully.");
+
+    } catch (error) {
+        console.error(
+            "TaskForge notification setup failed:",
+            error
+        );
+
+        alert(
+            "We couldn't enable notifications. " +
+            "Please check your browser settings and try again."
+        );
+    }
+}
+
+if (notificationButton) {
+    notificationButton.addEventListener(
+        "click",
+        enableTaskForgeNotifications
+    );
+}
+
+// ============================================
+// TASKFORGE — AUTOMATIC DEADLINE NOTIFICATIONS
+// ============================================
+
+const notifiedDeadlineReminders = new Set();
+
+function checkDeadlineNotifications() {
+// Only send notifications when permission is granted.
+if (
+!("Notification" in window) ||
+Notification.permission !== "granted"
+) {
+return;
+}
+
+
+// Wait until TaskForge has finished loading its tasks.
+if (typeof tasksReady !== "undefined" && !tasksReady) {
+    return;
+}
+
+const now = new Date();
+
+tasks.forEach(task => {
+    // Ignore completed tasks and tasks without due dates.
+    if (task.completed || !task.dueDate) {
+        return;
+    }
+
+    // Build the deadline from the task's saved date.
+    const [year, month, day] = task.dueDate
+        .split("-")
+        .map(Number);
+
+    if (
+        !Number.isInteger(year) ||
+        !Number.isInteger(month) ||
+        !Number.isInteger(day)
+    ) {
+        return;
+    }
+
+    // If no time was selected, use the end of the due date.
+    let hours = 23;
+    let minutes = 59;
+
+    if (task.dueTime) {
+        const parts = task.dueTime.split(":").map(Number);
+
+        if (
+            parts.length !== 2 ||
+            !Number.isInteger(parts[0]) ||
+            !Number.isInteger(parts[1]) ||
+            parts[0] < 0 ||
+            parts[0] > 23 ||
+            parts[1] < 0 ||
+            parts[1] > 59
+        ) {
+            return;
+        }
+
+        hours = parts[0];
+        minutes = parts[1];
+    }
+
+    const deadline = new Date(
+        year,
+        month - 1,
+        day,
+        hours,
+        minutes,
+        0,
+        0
+    );
+
+    // Ignore invalid calendar dates.
+    if (
+        Number.isNaN(deadline.getTime()) ||
+        deadline.getFullYear() !== year ||
+        deadline.getMonth() !== month - 1 ||
+        deadline.getDate() !== day
+    ) {
+        return;
+    }
+
+    // Do not notify before the actual deadline.
+    if (now < deadline) {
+        return;
+    }
+
+    // Distinguish tasks by their deadline so edited deadlines
+    // can generate a new reminder.
+    const reminderKey =
+        `${task.id}:${task.dueDate}:${task.dueTime || "end-of-day"}`;
+
+    if (notifiedDeadlineReminders.has(reminderKey)) {
+        return;
+    }
+
+    // Record the reminder to prevent repeated notifications.
+    notifiedDeadlineReminders.add(reminderKey);
+
+    const title = "⚠️ TaskForge: Deadline Reached";
+
+    const body = task.dueTime
+        ? `"${task.text}" reached its deadline at ${task.dueTime}. Review your task.`
+        : `"${task.text}" has reached the end of its due date. Review your task.`;
+
+    navigator.serviceWorker.ready
+        .then(registration => {
+            return registration.showNotification(title, {
+                body,
+                icon: "./taskforge-logo.svg",
+                tag: `taskforge-deadline-${reminderKey}`
+            });
+        })
+        .catch(error => {
+            // Allow a later check to retry if notification delivery fails.
+            notifiedDeadlineReminders.delete(reminderKey);
+
+            console.error(
+                "Could not send deadline notification:",
+                error
+            );
+        });
+});
+
+
+}
+
+// Check immediately, then every minute.
+checkDeadlineNotifications();
+
+setInterval(checkDeadlineNotifications, 60 * 1000);
+
+// ============================================
+// TASKFORGE — SPLASH SCREEN TRANSITION
+// ============================================
+
+(function initializeSplashScreen() {
+    const splashScreen = document.getElementById("splash-screen");
+    const authScreen = document.getElementById("auth-screen");
+
+    if (!splashScreen || !authScreen) {
+        console.warn("TaskForge splash or authentication screen not found.");
+        return;
+    }
+
+    // Show the splash screen first.
+    splashScreen.classList.remove("splash-hidden");
+
+    authScreen.style.visibility = "hidden";
+
+    // Allow time for the logo and motivational quote to appear.
+    window.setTimeout(() => {
+        splashScreen.classList.add("splash-hidden");
+        authScreen.style.visibility = "visible";
+
+        // Remove the splash screen after its fade-out.
+        window.setTimeout(() => {
+            splashScreen.remove();
+        }, 650);
+    }, 2500);
+})();
+
+// ============================================
+// TASKFORGE — SHARE FUNCTIONALITY
+// ============================================
+
+(function initializeTaskForgeSharing() {
+    const copyButton = document.getElementById("copy-taskforge-link");
+    const nativeShareButton = document.getElementById("native-share-taskforge");
+    const shareStatus = document.getElementById("share-taskforge-status");
+
+    const taskForgeUrl = "https://lincon-web.github.io/TaskForge/";
+
+    const shareData = {
+        title: "TaskForge | Productivity Dashboard",
+        text: "Check out TaskForge — your personal productivity space. Organize tasks, manage deadlines, and track your progress.",
+        url: taskForgeUrl
+    };
+
+    // Display feedback to the user.
+    function showShareStatus(message) {
+        if (shareStatus) {
+            shareStatus.textContent = message;
+        }
+    }
+
+    // Copy the live TaskForge URL.
+    async function copyTaskForgeLink() {
+        try {
+            if (navigator.clipboard && window.isSecureContext) {
+                await navigator.clipboard.writeText(taskForgeUrl);
+            } else {
+                const temporaryInput = document.createElement("textarea");
+
+                temporaryInput.value = taskForgeUrl;
+                temporaryInput.setAttribute("readonly", "");
+                temporaryInput.style.position = "absolute";
+                temporaryInput.style.left = "-9999px";
+
+                document.body.appendChild(temporaryInput);
+                temporaryInput.select();
+
+                const copied = document.execCommand("copy");
+                temporaryInput.remove();
+
+                if (!copied) {
+                    throw new Error("Copy command was unsuccessful.");
+                }
+            }
+
+            showShareStatus("TaskForge link copied! Share it with your friends. ✓");
+        } catch (error) {
+            console.error("TaskForge link copy failed:", error);
+            showShareStatus("Couldn't copy automatically. Please copy the link manually: " + taskForgeUrl);
+        }
+    }
+
+    // Open the device's native sharing menu when supported.
+    async function shareTaskForge() {
+        if (typeof navigator.share !== "function") {
+            showShareStatus(
+                "Native sharing isn't supported in this browser. Use WhatsApp, X, Facebook, or Copy Link instead."
+            );
+            return;
+        }
+
+        try {
+            await navigator.share(shareData);
+            showShareStatus("Thanks for sharing TaskForge! ✓");
+        } catch (error) {
+            if (error.name === "AbortError") {
+                showShareStatus("Sharing cancelled.");
+            } else {
+                console.error("TaskForge sharing failed:", error);
+                showShareStatus("Sharing couldn't be completed. Try Copy Link instead.");
+            }
+        }
+    }
+
+    // Attach event listeners only if the buttons exist.
+    if (copyButton) {
+        copyButton.addEventListener("click", copyTaskForgeLink);
+    }
+
+    if (nativeShareButton) {
+        nativeShareButton.addEventListener("click", shareTaskForge);
+    }
+})();

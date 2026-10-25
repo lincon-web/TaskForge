@@ -2723,3 +2723,556 @@ gap: 12px;
     outline-offset: 4px;
     border-radius: 4px;
 }
+
+
+/* TASKFORGE — TOPBAR ACTIONS FIX */
+
+.topbar-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 12px;
+    flex-shrink: 0;
+}
+
+.notification-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 44px;
+    padding: 0 16px;
+    border: 1px solid rgba(59, 130, 246, 0.3);
+    border-radius: 12px;
+    background: rgba(59, 130, 246, 0.08);
+    color: var(--text);
+    font: inherit;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.topbar-actions .notification-button {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* ============================================
+   TASKFORGE — PREMIUM WELCOME SPLASH SCREEN
+============================================ */
+
+.splash-screen {
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 24px;
+
+    background:
+        radial-gradient(
+            circle at 50% 35%,
+            rgba(37, 99, 235, 0.16),
+            transparent 42%
+        ),
+        #0b1120;
+
+    color: #f8fafc;
+    text-align: center;
+
+    opacity: 1;
+    visibility: visible;
+
+    transition:
+        opacity 0.6s ease,
+        visibility 0.6s ease;
+}
+
+.splash-screen.splash-hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.splash-content {
+    width: 100%;
+    max-width: 420px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    animation: splash-entrance 0.9s ease both;
+}
+
+.splash-logo {
+    width: 96px;
+    height: 96px;
+
+    object-fit: contain;
+
+    margin-bottom: 22px;
+
+    filter: drop-shadow(
+        0 0 24px rgba(59, 130, 246, 0.35)
+    );
+
+    animation: splash-logo-glow 2.5s ease-in-out infinite;
+}
+
+.splash-brand {
+    margin: 0;
+
+    font-size: clamp(2rem, 8vw, 3rem);
+    font-weight: 900;
+    letter-spacing: 0.2em;
+
+    color: #f8fafc;
+}
+
+.splash-tagline {
+    margin: 12px 0 0;
+
+    color: #93c5fd;
+
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.28em;
+}
+
+.splash-divider {
+    width: 64px;
+    height: 3px;
+
+    margin: 34px 0 26px;
+
+    border-radius: 10px;
+
+    background: #3b82f6;
+}
+
+.splash-quote {
+    max-width: 360px;
+
+    margin: 0;
+
+    color: #e2e8f0;
+
+    font-size: clamp(1.15rem, 4vw, 1.45rem);
+    font-weight: 600;
+    line-height: 1.7;
+}
+
+.splash-message {
+    margin: 22px 0 0;
+
+    color: #94a3b8;
+
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+}
+
+.splash-loader {
+    display: flex;
+    gap: 8px;
+
+    margin-top: 42px;
+}
+
+.splash-loader span {
+    width: 7px;
+    height: 7px;
+
+    border-radius: 50%;
+    background: #60a5fa;
+
+    animation: splash-loader-pulse 1.2s ease-in-out infinite;
+}
+
+.splash-loader span:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.splash-loader span:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+@keyframes splash-entrance {
+    from {
+        opacity: 0;
+        transform: translateY(16px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes splash-logo-glow {
+    0%, 100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.04);
+    }
+}
+
+@keyframes splash-loader-pulse {
+    0%, 60%, 100% {
+        opacity: 0.35;
+        transform: translateY(0);
+    }
+
+    30% {
+        opacity: 1;
+        transform: translateY(-5px);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .splash-content,
+    .splash-logo,
+    .splash-loader span {
+        animation: none;
+    }
+
+    .splash-screen {
+        transition: none;
+    }
+}
+
+
+/* ============================================
+   TASKFORGE — COPYRIGHT FOOTER
+============================================ */
+
+.app-footer {
+    width: 100%;
+    padding: 18px 16px;
+
+    color: #94a3b8;
+    text-align: center;
+
+    font-size: 0.78rem;
+    line-height: 1.6;
+
+    border-top: 1px solid rgba(148, 163, 184, 0.12);
+}
+
+.app-footer p {
+    margin: 0;
+}
+
+.auth-footer {
+    background: #0b1120;
+}
+
+@media (max-width: 480px) {
+    .app-footer {
+        padding: 16px 12px;
+        font-size: 0.72rem;
+    }
+}
+
+/* ============================================
+TASKFORGE — SHARE SECTION
+============================================ */
+
+.share-taskforge-card {
+margin-top: 24px;
+}
+
+.share-buttons {
+display: grid;
+grid-template-columns: repeat(2, minmax(0, 1fr));
+gap: 14px;
+margin-top: 22px;
+}
+
+.share-button {
+display: flex;
+align-items: center;
+justify-content: center;
+gap: 10px;
+min-height: 50px;
+padding: 12px 16px;
+box-sizing: border-box;
+
+
+border: 1px solid rgba(148, 163, 184, 0.18);
+border-radius: 12px;
+
+background: #111c30;
+color: #f8fafc;
+
+font: inherit;
+font-size: 0.9rem;
+font-weight: 600;
+text-align: center;
+text-decoration: none;
+
+cursor: pointer;
+transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+
+
+}
+
+.share-button span:first-child {
+font-size: 1.15rem;
+}
+
+.share-button:hover {
+background: #1b2a42;
+border-color: #3b82f6;
+transform: translateY(-2px);
+}
+
+.share-button:focus-visible {
+outline: 2px solid #60a5fa;
+outline-offset: 3px;
+}
+
+.share-whatsapp {
+border-color: rgba(37, 211, 102, 0.3);
+}
+
+.share-x {
+border-color: rgba(148, 163, 184, 0.3);
+}
+
+.share-facebook {
+border-color: rgba(66, 103, 178, 0.4);
+}
+
+.share-copy {
+border-color: rgba(59, 130, 246, 0.4);
+}
+
+.share-native {
+border-color: rgba(139, 92, 246, 0.4);
+}
+
+.share-status {
+min-height: 20px;
+margin: 14px 0 0;
+color: #93c5fd;
+font-size: 0.85rem;
+line-height: 1.5;
+}
+
+.share-status:empty {
+display: none;
+}
+
+@media (max-width: 480px) {
+.share-buttons {
+grid-template-columns: 1fr;
+gap: 10px;
+}
+
+
+.share-button {
+    min-height: 48px;
+}
+
+
+}
+
+@media (prefers-reduced-motion: reduce) {
+.share-button {
+transition: none;
+}
+
+
+.share-button:hover {
+    transform: none;
+}
+
+
+}
+
+/* ================================
+ABOUT TASKFORGE SECTION
+================================ */
+
+.about-taskforge-card {
+margin-top: 24px;
+overflow: hidden;
+}
+
+.about-brand {
+padding: 28px 20px;
+text-align: center;
+border-bottom: 1px solid rgba(148, 163, 184, 0.14);
+}
+
+.about-logo {
+display: block;
+width: 76px;
+height: 76px;
+object-fit: contain;
+margin: 0 auto 14px;
+filter: drop-shadow(0 0 14px rgba(59, 130, 246, 0.22));
+}
+
+.about-brand h2 {
+margin: 0;
+color: #f8fafc;
+font-size: clamp(1.5rem, 4vw, 2rem);
+font-weight: 800;
+letter-spacing: 0.12em;
+overflow-wrap: anywhere;
+}
+
+.about-brand h2 span {
+display: inline-block;
+margin-left: 5px;
+padding: 4px 8px;
+border: 1px solid rgba(96, 165, 250, 0.35);
+border-radius: 6px;
+color: #93c5fd;
+font-size: 0.7rem;
+letter-spacing: 0.04em;
+vertical-align: middle;
+}
+
+.about-tagline {
+margin: 10px 0 0;
+color: #60a5fa;
+font-size: 0.72rem;
+font-weight: 700;
+letter-spacing: 0.24em;
+}
+
+.about-description {
+max-width: 440px;
+margin: 16px auto 0;
+color: #cbd5e1;
+font-size: 0.94rem;
+line-height: 1.8;
+}
+
+/* FEATURED MOTIVATIONAL QUOTE */
+
+.about-quote {
+position: relative;
+margin: 24px 0;
+padding: 30px 26px 24px;
+border-left: 3px solid #3b82f6;
+border-radius: 0 14px 14px 0;
+background: linear-gradient(
+115deg,
+rgba(30, 58, 95, 0.38),
+rgba(15, 23, 42, 0.22)
+);
+}
+
+.quote-mark {
+display: block;
+height: 42px;
+color: #60a5fa;
+font-family: Georgia, serif;
+font-size: 4rem;
+font-weight: 700;
+line-height: 1;
+}
+
+.about-quote blockquote {
+margin: 8px 0 18px;
+color: #f1f5f9;
+font-size: clamp(1rem, 2.5vw, 1.2rem);
+font-weight: 600;
+line-height: 1.9;
+overflow-wrap: anywhere;
+}
+
+.quote-attribution {
+margin: 0;
+color: #93c5fd;
+font-size: 0.8rem;
+font-weight: 600;
+letter-spacing: 0.04em;
+}
+
+/* TASKFORGE PRINCIPLES */
+
+.about-principles {
+display: grid;
+grid-template-columns: repeat(3, minmax(0, 1fr));
+gap: 12px;
+margin-top: 24px;
+}
+
+.about-principle {
+display: flex;
+flex-direction: column;
+gap: 10px;
+min-width: 0;
+padding: 18px 14px;
+border: 1px solid rgba(148, 163, 184, 0.14);
+border-radius: 12px;
+background: rgba(15, 23, 42, 0.38);
+}
+
+.about-principle strong {
+color: #60a5fa;
+font-size: 0.78rem;
+letter-spacing: 0.12em;
+}
+
+.about-principle span {
+color: #e2e8f0;
+font-size: 0.86rem;
+font-weight: 600;
+line-height: 1.6;
+overflow-wrap: anywhere;
+}
+
+/* RESPONSIVE LAYOUT */
+
+@media (max-width: 600px) {
+.about-brand {
+padding: 24px 12px;
+}
+
+
+.about-quote {
+    margin: 20px 0;
+    padding: 24px 18px 20px;
+}
+
+.about-principles {
+    grid-template-columns: 1fr;
+    gap: 10px;
+}
+
+.about-principle {
+    flex-direction: row;
+    align-items: center;
+    gap: 14px;
+    padding: 14px;
+}
+
+.about-principle strong {
+    min-width: 24px;
+}
+
+
+}
+
+@media (prefers-reduced-motion: reduce) {
+.about-taskforge-card,
+.about-logo {
+scroll-behavior: auto;
+}
+}
+
